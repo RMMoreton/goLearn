@@ -1,4 +1,4 @@
-//Package heap contains implementations of both a min-heap and a max-heap
+//Package heap implements a heap.
 package heap
 
 // Interface is just a covenience type; my code highlighter doesn't like braces
