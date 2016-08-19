@@ -12,9 +12,9 @@ type Interface interface {}
 
 // Sortable values may be sorted.
 type Sortable interface {
-	// LessThan reports whether the Sortable value which it was called on is
-	// less than b.
-	LessThan(b Interface) bool
+	// ComesFirst reports whether the Sortable value which it was called on
+	// should come before b.
+	ComesFirst(b Interface) bool
 }
 
 // MinHeap is a minimum-heap.
