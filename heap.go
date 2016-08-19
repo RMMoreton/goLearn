@@ -1,10 +1,11 @@
 //Package heap contains implementations of both a min-heap and a max-heap
 package heap
 
-// Interface is used to make my code prettier.
+// Interface is just a covenience type; my code highlighter doesn't like braces
+// in function definitions, and defining Interface solves that problem.
 type Interface interface{}
 
-// Sortable values may be sorted.
+// A type which implements Sortable may be ordered.
 type Sortable interface {
 	// ComesBefore reports whether the Sortable value which it was called on
 	// should come before b.
@@ -26,7 +27,7 @@ func (h *Heap) Add(e Sortable) {
 }
 
 // Peek returns the element with highest priority without removing it.
-func (h *Heap) Peek() (Interface, bool) {
+func (h *Heap) Peek() (Sortable, bool) {
 	if len(*h) == 0 {
 		return nil, false
 	}
@@ -35,7 +36,7 @@ func (h *Heap) Peek() (Interface, bool) {
 
 // Remove removes the first element in the heap, re-heapifies the heap,
 // and returns the removed element.
-func (h *Heap) Remove() (Interface, bool) {
+func (h *Heap) Remove() (Sortable, bool) {
 	// Quick sanity check.
 	if len(*h) == 0 {
 		return nil, false
