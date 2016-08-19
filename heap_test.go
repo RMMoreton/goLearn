@@ -260,7 +260,7 @@ func TestHeapifyReturnsHeap(t *testing.T) {
 		curTmp, ok := h.Remove()
 		if !ok {
 			t.Error("should be able to remove from a non-empty heap")
-		}	
+		}
 		cur := curTmp.(Sint)
 		if prev.Val() > cur.Val() {
 			t.Error("out of order elements\nfirst:", prev.Val(), "\nsecond:", cur.Val())
@@ -338,7 +338,7 @@ func TestUnionRemovalOrderAndContent(t *testing.T) {
 	if !ok {
 		t.Errorf("should be able to remove from non-empty heap")
 	}
-	prev := prevTmp.(Sint) 
+	prev := prevTmp.(Sint)
 	for i := 1; i < 32; i++ {
 		curTmp, ok := u.Remove()
 		if !ok {

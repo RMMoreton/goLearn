@@ -1,12 +1,6 @@
 //Package heap contains implementations of both a min-heap and a max-heap
 package heap
 
-import(
-	"fmt"
-)
-
-var _ = fmt.Sprintf("") // TODO: remove
-
 // Interface is used to make my code prettier.
 type Interface interface{}
 
@@ -17,7 +11,7 @@ type Sortable interface {
 	ComesBefore(b Interface) bool
 }
 
-// Heap is just a heap backed by an array.
+// Heap is just a an array of things that can be ordered.
 type Heap []Sortable
 
 // Len returns the length of the heap.
