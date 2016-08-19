@@ -50,12 +50,11 @@ func (h *Heap) Remove() (Sortable, bool) {
 }
 
 // Union takes two heaps and returns a new Heap with the elements of
-// both. It's on the user to make sure that the two heaps are of the
-// same type.
-func (h *Heap) Union(g Heap) Heap {
+// heaps. The original Heaps are preserved.
+func Union(g, h Heap) Heap {
 	var newHeap Heap
-	for i := 0; i < len(*h); i++ {
-		newHeap.Add((*h)[i])
+	for i := 0; i < len(h); i++ {
+		newHeap.Add(h[i])
 	}
 	for i := 0; i < len(g); i++ {
 		newHeap.Add(g[i])

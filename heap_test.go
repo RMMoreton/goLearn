@@ -276,7 +276,7 @@ func TestUnionHasCorrectLength(t *testing.T) {
 		g.Add(Sint(rand.Int()))
 		h.Add(Sint(rand.Int()))
 	}
-	u := g.Union(h)
+	u := Union(g, h)
 	if 32 != u.Len() {
 		t.Error("union'd heap has incorrect length")
 	}
@@ -291,7 +291,7 @@ func TestUnionPreservesBothHeaps(t *testing.T) {
 	}
 	gExpect := fmt.Sprintf("%v", g)
 	hExpect := fmt.Sprintf("%v", h)
-	_ = g.Union(h)
+	_ = Union(g, h)
 	gActual := fmt.Sprintf("%v", g)
 	hActual := fmt.Sprintf("%v", h)
 	if gExpect != gActual {
@@ -311,7 +311,7 @@ func TestUnionRemovalDoesntAffectOtherHeaps(t *testing.T) {
 	}
 	gExpect := fmt.Sprintf("%v", g)
 	hExpect := fmt.Sprintf("%v", h)
-	u := g.Union(h)
+	u := Union(g, h)
 	_, ok := u.Remove()
 	if !ok {
 		t.Error("should be able to remove from a non-empty heap")
@@ -333,7 +333,7 @@ func TestUnionRemovalOrderAndContent(t *testing.T) {
 		g.Add(Sint(rand.Int()))
 		h.Add(Sint(rand.Int()))
 	}
-	u := g.Union(h)
+	u := Union(g, h)
 	prevTmp, ok := u.Remove()
 	if !ok {
 		t.Errorf("should be able to remove from non-empty heap")
@@ -358,8 +358,8 @@ func TestUnionOrderDoesntMatter(t *testing.T) {
 		g.Add(Sint(rand.Int()))
 		h.Add(Sint(rand.Int()))
 	}
-	u1 := g.Union(h)
-	u2 := h.Union(g)
+	u1 := Union(g, h)
+	u2 := Union(h, g)
 	for i := 0; i < 32; i++ {
 		e1Tmp, ok := u1.Remove()
 		if !ok {
@@ -384,8 +384,8 @@ func TestUnionSingleNil(t *testing.T) {
 		g.Add(Sint(rand.Int()))
 	}
 	expect := fmt.Sprintf("%v", g)
-	u1 := g.Union(h)
-	u2 := h.Union(g)
+	u1 := Union(g, h)
+	u2 := Union(h, g)
 	actual1 := fmt.Sprintf("%v", u1)
 	actual2 := fmt.Sprintf("%v", u2)
 	if actual1 != expect {
@@ -399,12 +399,8 @@ func TestUnionSingleNil(t *testing.T) {
 // Test that Union with two nil heaps returns nil.
 func TestUnionDoubleNil(t *testing.T) {
 	var g, h Heap
-	u1 := g.Union(h)
-	u2 := g.Union(g)
-	if nil != u1 {
-		t.Error("union with two nils should be nil, got", u1)
-	}
-	if nil != u2 {
-		t.Error("union with two nils should be nil, got", u2)
+	u := Union(g, h)
+	if nil != u {
+		t.Error("union with two nils should be nil, got", u)
 	}
 }
