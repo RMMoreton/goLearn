@@ -1,5 +1,5 @@
-//Package heap implements a heap.
-package heap
+//Package goheap implements a heap.
+package goheap
 
 // Interface is just a covenience type; my code highlighter doesn't like braces
 // in function definitions, and defining Interface solves that problem.

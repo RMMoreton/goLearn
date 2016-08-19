@@ -3,19 +3,32 @@
 Golang-Heap provides a Golang implementation of a heap using
 slices as the backing data structure.
 
-## The Sortable Interface
-To implement the Sortable interface, a type must have a method 
-`ComesBefore(b interface{}) bool` defined on it. `ComesBefore()` should
-return true if the calling value comes before (i.e. has a higher priority
-than) `b`, and false otherwise.
+[Documentation](http://godoc.org/github.com/RMMoreton/golang-heap)
 
-Note that because `b` is of type `interface{}`, you will almost certainly
-have to type assert it inside your function. So don't be careless about
-what you put in your Heap!
+## Examples
 
-## Creation
-Create a Heap with the syntax
+### Sortable Interface
 
-	var h golang-heap.Heap
+	type Sint int
 
-The zero value of a Heap is useable without any initialization.
+	func (a Sint) ComesBefore(b interface{}) bool {
+		// Type assert b back to an Sint.
+		bb, ok := b.(Sint)
+		if !ok {
+			// Do something to save yourself
+		}
+		// In this example, higher value means higher priority.
+		if int(a) > int(bb) {
+			return true
+		}
+		return false
+	}
+
+Obviously you can get yourself in to trouble with the type assert; be
+careful about what you put into the Heap and you'll be okay.
+
+### Creating a Heap
+
+	var h goheap.Heap
+
+The zero-value of a Heap is useable without any extra initialization.

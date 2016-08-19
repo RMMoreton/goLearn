@@ -1,4 +1,4 @@
-package heap
+package goheap
 
 import (
 	"fmt"
@@ -12,14 +12,14 @@ type Sint int
 // Less allows Sint's to be sorted by the heap functions.
 func (a Sint) ComesBefore(iB Interface) bool {
 	b := iB.(Sint)
-	if a.Val() < b.Val() {
+	if int(a) < int(b) {
 		return true
 	}
 	return false
 }
 
 // Val gives me a programatic way to access an Sint's value,
-// which is useful in ComesBefore().
+// which is useful in various tests.
 func (a Sint) Val() int {
 	return int(a)
 }
