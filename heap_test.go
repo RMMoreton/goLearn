@@ -229,3 +229,182 @@ func TestManyInsertions(t *testing.T) {
 		prev = cur
 	}
 }
+
+// Test that after Heapify, the original slice is unchanged.
+func TestHeapifySliceDoesntChange(t *testing.T) {
+	var s []Sortable
+	for i := 0; i < 16; i++ {
+		s = append(s, Sint(rand.Int()))
+	}
+	expect := fmt.Sprintf("%v", s)
+	_ = Heapify(s)
+	actual := fmt.Sprintf("%v", s)
+	if expect != actual {
+		t.Error("heapify changed underlying slice\nexpect:", expect, "\nactual:", actual)
+	}
+}
+
+// Test that Heapify returns something with the heap property.
+func TestHeapifyReturnsHeap(t *testing.T) {
+	var s []Sortable
+	for i := 0; i < 1024; i++ {
+		s = append(s, Sint(rand.Int()))
+	}
+	h := Heapify(s)
+	prevTmp, ok := h.Remove()
+	if !ok {
+		t.Error("should be able to remove from a non-empty heap")
+	}
+	prev := prevTmp.(Sint)
+	for i := 1; i < 1024; i++ {
+		curTmp, ok := h.Remove()
+		if !ok {
+			t.Error("should be able to remove from a non-empty heap")
+		}	
+		cur := curTmp.(Sint)
+		if prev.Val() > cur.Val() {
+			t.Error("out of order elements\nfirst:", prev.Val(), "\nsecond:", cur.Val())
+		}
+		prev = cur
+	}
+}
+
+// Test that a Union returns an array of the correct length.
+func TestUnionHasCorrectLength(t *testing.T) {
+	var g, h Heap
+	for i := 0; i < 16; i++ {
+		g.Add(Sint(rand.Int()))
+		h.Add(Sint(rand.Int()))
+	}
+	u := g.Union(h)
+	if 32 != u.Len() {
+		t.Error("union'd heap has incorrect length")
+	}
+}
+
+// Test that a Union doesn't change either Heap.
+func TestUnionPreservesBothHeaps(t *testing.T) {
+	var g, h Heap
+	for i := 0; i < 16; i++ {
+		g.Add(Sint(rand.Int()))
+		h.Add(Sint(rand.Int()))
+	}
+	gExpect := fmt.Sprintf("%v", g)
+	hExpect := fmt.Sprintf("%v", h)
+	_ = g.Union(h)
+	gActual := fmt.Sprintf("%v", g)
+	hActual := fmt.Sprintf("%v", h)
+	if gExpect != gActual {
+		t.Error("union changed an underlying Heap\nexpect:", gExpect, "\nactual:", gActual)
+	}
+	if hExpect != hActual {
+		t.Error("union changed an underlying Heap\nexpect:", hExpect, "\nactual:", hActual)
+	}
+}
+
+// Test that removing from a Union doesn't change either old Heap.
+func TestUnionRemovalDoesntAffectOtherHeaps(t *testing.T) {
+	var g, h Heap
+	for i := 0; i < 16; i++ {
+		g.Add(Sint(rand.Int()))
+		h.Add(Sint(rand.Int()))
+	}
+	gExpect := fmt.Sprintf("%v", g)
+	hExpect := fmt.Sprintf("%v", h)
+	u := g.Union(h)
+	_, ok := u.Remove()
+	if !ok {
+		t.Error("should be able to remove from a non-empty heap")
+	}
+	gActual := fmt.Sprintf("%v", g)
+	hActual := fmt.Sprintf("%v", h)
+	if gExpect != gActual {
+		t.Error("union removal changed an underlying Heap\nexpect:", gExpect, "\nactual:", gActual)
+	}
+	if hExpect != hActual {
+		t.Error("union removal changed an underlying Heap\nexpect:", hExpect, "\nactual:", hActual)
+	}
+}
+
+// Test that a Union has all the right elements (in the right order).
+func TestUnionRemovalOrderAndContent(t *testing.T) {
+	var g, h Heap
+	for i := 0; i < 16; i++ {
+		g.Add(Sint(rand.Int()))
+		h.Add(Sint(rand.Int()))
+	}
+	u := g.Union(h)
+	prevTmp, ok := u.Remove()
+	if !ok {
+		t.Errorf("should be able to remove from non-empty heap")
+	}
+	prev := prevTmp.(Sint) 
+	for i := 1; i < 32; i++ {
+		curTmp, ok := u.Remove()
+		if !ok {
+			t.Errorf("should be able to remove from non-empty heap")
+		}
+		cur := curTmp.(Sint)
+		if prev > cur {
+			t.Error("union doesn't yield a heap\nfirst:", prev.Val(), "second:", cur.Val())
+		}
+	}
+}
+
+// Test that Union is the same in either direction.
+func TestUnionOrderDoesntMatter(t *testing.T) {
+	var g, h Heap
+	for i := 0; i < 16; i++ {
+		g.Add(Sint(rand.Int()))
+		h.Add(Sint(rand.Int()))
+	}
+	u1 := g.Union(h)
+	u2 := h.Union(g)
+	for i := 0; i < 32; i++ {
+		e1Tmp, ok := u1.Remove()
+		if !ok {
+			t.Errorf("should be able to remove from non-empty heap")
+		}
+		e1 := e1Tmp.(Sint)
+		e2Tmp, ok := u2.Remove()
+		if !ok {
+			t.Errorf("should be able to remove from non-empty heap")
+		}
+		e2 := e2Tmp.(Sint)
+		if e1.Val() != e2.Val() {
+			t.Error("union order matters\nfirst:", e1.Val(), "\nsecond:", e2.Val())
+		}
+	}
+}
+
+// Test that Union with one nil heap returns correctly.
+func TestUnionSingleNil(t *testing.T) {
+	var g, h Heap
+	for i := 0; i < 16; i++ {
+		g.Add(Sint(rand.Int()))
+	}
+	expect := fmt.Sprintf("%v", g)
+	u1 := g.Union(h)
+	u2 := h.Union(g)
+	actual1 := fmt.Sprintf("%v", u1)
+	actual2 := fmt.Sprintf("%v", u2)
+	if actual1 != expect {
+		t.Error("union with nil\nexpect:", expect, "\nactual:", actual1)
+	}
+	if actual2 != expect {
+		t.Error("union with nil\nexpect:", expect, "\nactual:", actual2)
+	}
+}
+
+// Test that Union with two nil heaps returns nil.
+func TestUnionDoubleNil(t *testing.T) {
+	var g, h Heap
+	u1 := g.Union(h)
+	u2 := g.Union(g)
+	if nil != u1 {
+		t.Error("union with two nils should be nil, got", u1)
+	}
+	if nil != u2 {
+		t.Error("union with two nils should be nil, got", u2)
+	}
+}

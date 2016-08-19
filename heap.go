@@ -1,6 +1,12 @@
 //Package heap contains implementations of both a min-heap and a max-heap
 package heap
 
+import(
+	"fmt"
+)
+
+var _ = fmt.Sprintf("") // TODO: remove
+
 // Interface is used to make my code prettier.
 type Interface interface{}
 
@@ -46,6 +52,30 @@ func (h *Heap) Remove() (Interface, bool) {
 	*h = heap[:len(*h)-1]
 	h.bubbleDown()
 	return toReturn, true
+}
+
+// Union takes two heaps and returns a new Heap with the elements of
+// both. It's on the user to make sure that the two heaps are of the
+// same type.
+func (h *Heap) Union(g Heap) Heap {
+	var newHeap Heap
+	for i := 0; i < len(*h); i++ {
+		newHeap.Add((*h)[i])
+	}
+	for i := 0; i < len(g); i++ {
+		newHeap.Add(g[i])
+	}
+	return newHeap
+}
+
+// Heapify makes a heap using the passed slice. The passed slice is
+// preserved.
+func Heapify(arr []Sortable) Heap {
+	var h Heap
+	for i := 0; i < len(arr); i++ {
+		h.Add(arr[i])
+	}
+	return h
 }
 
 // bubbleUp shifts the element at the end of the backing array
