@@ -1,4 +1,4 @@
-# Heap
+# Golang-Heap
 ### Robert Moreton
 
 Heap provides Golang implementations of both a min-heap and a max-heap using
