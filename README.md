@@ -1,6 +1,6 @@
-# Golang-Heap
+# goheap
 
-Golang-Heap provides a Golang implementation of a heap using
+Goheap provides a Golang implementation of a heap using
 slices as the backing data structure.
 
 [Documentation](http://godoc.org/github.com/RMMoreton/golang-heap)
