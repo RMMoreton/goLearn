@@ -11,7 +11,7 @@ type Sortable interface {
 	ComesBefore(b Interface) bool
 }
 
-// MinHeap is a minimum-heap.
+// Heap is just a heap backed by an array.
 type Heap []Sortable
 
 // Len returns the length of the heap.
@@ -19,37 +19,36 @@ func (h *Heap) Len() int {
 	return len(*h)
 }
 
-// Add adds a value to the min-heap.
+// Add adds a value to the heap.
 func (h *Heap) Add(e Sortable) {
 	*h = append(*h, e)
 	h.bubbleUp()
 }
 
-// Peek returns the element with highest priority, without removing it.
-func (h *Heap) Peek() Interface {
-	// Quick sanity check.
+// Peek returns the element with highest priority without removing it.
+func (h *Heap) Peek() (Interface, bool) {
 	if len(*h) == 0 {
-		return nil
+		return nil, false
 	}
-	return (*h)[0]
+	return (*h)[0], true
 }
 
-// Remove removes the first element in the heap, restructures the heap,
-// and returns it.
-func (h *Heap) Remove() Interface {
+// Remove removes the first element in the heap, re-heapifies the heap,
+// and returns the removed element.
+func (h *Heap) Remove() (Interface, bool) {
 	// Quick sanity check.
 	if len(*h) == 0 {
-		return nil
+		return nil, false
 	}
 	heap := *h
 	toReturn := heap[0]
 	heap[0] = heap[len(*h)-1]
 	*h = heap[:len(*h)-1]
 	h.bubbleDown()
-	return toReturn
+	return toReturn, true
 }
 
-// bubbleUp takes an index and shifts the element at that index
+// bubbleUp shifts the element at the end of the backing array
 // up the heap until the heap property is restored.
 func (h *Heap) bubbleUp() {
 	i := len(*h) - 1
@@ -68,8 +67,8 @@ func (h *Heap) bubbleUp() {
 	}
 }
 
-// bubbleDown takes an index and shifts the element at that index
-// down the heap until the heap property is satisfied
+// bubbleDown shifts the 0th element of the backing array
+// down the heap until the heap property is restored.
 func (h *Heap) bubbleDown() {
 	i := 0
 	// Quick sanity check.
@@ -80,7 +79,7 @@ func (h *Heap) bubbleDown() {
 	for {
 		c1 := 2*i + 1
 		c2 := 2*i + 2
-		// Test a bunch of edge case possibilities.
+		// A bunch of edge cases.
 		if c1 >= len(*h) && c2 >= len(*h) {
 			return
 		}

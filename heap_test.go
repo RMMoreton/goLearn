@@ -2,6 +2,7 @@ package heap
 
 import (
 	"fmt"
+	"math/rand"
 	"testing"
 )
 
@@ -94,7 +95,11 @@ func TestAdd16IncreasingPriority(t *testing.T) {
 	var h Heap
 	for i := 15; i >= 0; i-- {
 		h.Add(Sint(i))
-		p := h.Peek().(Sint)
+		pTemp, ok := h.Peek()
+		if !ok {
+			t.Error("unable to peek into what should be a non-empty Heap")
+		}
+		p := pTemp.(Sint)
 		if i != p.Val() {
 			t.Error("adding elements in increasing priority\nexpect:", i, "\nactual:", p.Val())
 		}
@@ -104,9 +109,9 @@ func TestAdd16IncreasingPriority(t *testing.T) {
 // Test Peeking into a nil heap.
 func TestPeekIntoNil(t *testing.T) {
 	var h Heap
-	p := h.Peek()
-	if nil != p {
-		t.Error("peeking into a nil heap should return nil")
+	_, ok := h.Peek()
+	if ok {
+		t.Error("was able to peek into what should be a nil Heap")
 	}
 }
 
@@ -114,10 +119,13 @@ func TestPeekIntoNil(t *testing.T) {
 func TestPeekEmptyNonNil(t *testing.T) {
 	var h Heap
 	h.Add(Sint(5))
-	_ = h.Remove()
-	p := h.Peek()
-	if nil != p {
-		t.Error("peeking into an empty, non-nil heap should return nil")
+	_, ok := h.Remove()
+	if !ok {
+		t.Error("should be able to remove from a non-empty Heap")
+	}
+	_, ok = h.Peek()
+	if ok {
+		t.Error("was able to peek into what should be an empty Heap")
 	}
 }
 
@@ -126,7 +134,11 @@ func TestPeekNonNil(t *testing.T) {
 	var h Heap
 	for i := 15; i > 0; i-- {
 		h.Add(Sint(i))
-		p := h.Peek().(Sint)
+		pTemp, ok := h.Peek()
+		if !ok {
+			t.Error("was unable to peek")
+		}
+		p := pTemp.(Sint)
 		if p.Val() != i {
 			t.Error("peeking into a heap\nexpect:", i, "\nactual:", p.Val())
 		}
@@ -136,9 +148,9 @@ func TestPeekNonNil(t *testing.T) {
 // Test removing from a nil heap.
 func TestRemoveNil(t *testing.T) {
 	var h Heap
-	r := h.Remove()
-	if nil != r {
-		t.Error("removing from nil heap should return nil")
+	_, ok := h.Remove()
+	if ok {
+		t.Error("should not be able to remove from a nil Heap")
 	}
 }
 
@@ -148,9 +160,13 @@ func TestRemoveNonNil(t *testing.T) {
 	for i := 15; i >= 8; i-- {
 		h.Add(Sint(i))
 	}
-	p := h.Remove().(Sint)
-	if 8 != p.Val() {
-		t.Error("removing from a non-nil heap\nexpect:", 8, "\nactual:", p.Val())
+	rTemp, ok := h.Remove()
+	if !ok {
+		t.Error("was not able to remove from a non-empty Heap")
+	}
+	r := rTemp.(Sint)
+	if 8 != r.Val() {
+		t.Error("removing from a non-nil heap\nexpect:", 8, "\nactual:", r.Val())
 	}
 }
 
@@ -161,7 +177,10 @@ func TestRemoveDecreaseLength(t *testing.T) {
 	for i := 7; i >= 0; i-- {
 		h.Add(Sint(i))
 	}
-	_ = h.Remove()
+	_, ok := h.Remove()
+	if !ok {
+		t.Error("should be able to remove from a non-empty Heap")
+	}
 	if 7 != h.Len() {
 		t.Error("after removal, length should be 7")
 	}
@@ -174,9 +193,39 @@ func TestRemoveBubbleDown(t *testing.T) {
 		h.Add(Sint(i))
 	}
 	for i := 0; i <= 15; i++ {
-		p := h.Remove().(Sint)
-		if i != p.Val() {
-			t.Error("removing doesn't preserve the heap property\nexpect:", i, "actual:", p.Val())
+		rTemp, ok := h.Remove()
+		if !ok {
+			t.Error("should be able to remove from a non-empty Heap")
 		}
+		r := rTemp.(Sint)
+		if i != r.Val() {
+			t.Error("removing doesn't preserve the heap property\nexpect:", i, "actual:", r.Val())
+		}
+	}
+}
+
+// Test that a large number of insertions returns them in the
+// correct order.
+func TestManyInsertions(t *testing.T) {
+	var h Heap
+	numToAdd := 4096
+	for i := 0; i < numToAdd; i++ {
+		h.Add(Sint(rand.Int()))
+	}
+	prevTmp, ok := h.Remove()
+	if !ok {
+		t.Error("should be able to remove from a non-empty Heap")
+	}
+	prev := prevTmp.(Sint)
+	for i := 1; i < numToAdd; i++ {
+		curTmp, ok := h.Remove()
+		if !ok {
+			t.Error("should be able to remove from a non-empty Heap")
+		}
+		cur := curTmp.(Sint)
+		if cur.Val() < prev.Val() {
+			t.Error("elements came out in the wrong order\npre:", prev.Val(), "\ncur:", cur.Val())
+		}
+		prev = cur
 	}
 }
