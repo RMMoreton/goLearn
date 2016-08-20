@@ -6,7 +6,8 @@ import (
 	"github.com/RMMoreton/goheap"
 )
 
-// This *might* cause some problems down the road. Hopefully not!
+// This *might* cause some problems down the road, with some functions expecting
+// a goheap.Sortable and getting a gopriq.Sortable. Hopefully not!
 type Sortable goheap.Sortable
 
 // A priority queue is just a structure holding a Heap. I tried to write
