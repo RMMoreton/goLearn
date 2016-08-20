@@ -10,7 +10,7 @@ import (
 type Sint int
 
 // Less allows Sint's to be sorted by the heap functions.
-func (a Sint) ComesBefore(iB Interface) bool {
+func (a Sint) ComesBefore(iB interface{}) bool {
 	b := iB.(Sint)
 	if int(a) < int(b) {
 		return true

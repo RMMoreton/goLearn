@@ -1,16 +1,12 @@
 //Package goheap implements a heap.
 package goheap
 
-// Interface is just a covenience type; my code highlighter doesn't like braces
-// in function definitions, and defining Interface solves that problem.
-type Interface interface{}
-
 // A type which implements Sortable may be ordered. Maybe I should have
 // called this one Orderable. Oh well.
 type Sortable interface {
 	// ComesBefore reports whether the Sortable value which it was called on
 	// should come before b.
-	ComesBefore(b Interface) bool
+	ComesBefore(b interface{}) bool
 }
 
 // A Heap is just a an array of things that can be ordered.
