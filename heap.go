@@ -5,28 +5,39 @@ package goheap
 // in function definitions, and defining Interface solves that problem.
 type Interface interface{}
 
-// A type which implements Sortable may be ordered.
+// A type which implements Sortable may be ordered. Maybe I should have
+// called this one Orderable. Oh well.
 type Sortable interface {
 	// ComesBefore reports whether the Sortable value which it was called on
 	// should come before b.
 	ComesBefore(b Interface) bool
 }
 
-// Heap is just a an array of things that can be ordered.
+// A Heap is just a an array of things that can be ordered.
 type Heap []Sortable
 
-// Len returns the length of the heap.
+// Len returns the length of the Heap.
 func (h *Heap) Len() int {
 	return len(*h)
 }
 
-// Add adds a value to the heap.
+// Empty reports whether the Heap is empty.
+func (h *Heap) Empty() bool {
+	if len(*h) == 0 {
+		return true
+	}
+	return false
+}
+
+// Add adds a value to the Heap.
 func (h *Heap) Add(e Sortable) {
 	*h = append(*h, e)
 	h.bubbleUp()
 }
 
-// Peek returns the element with highest priority without removing it.
+// Peek returns the element with highest priority without removing it, and
+// a boolean to indicate if the returned value is valid, i.e. if there are
+// no elements in the queue, the bool will be false.
 func (h *Heap) Peek() (Sortable, bool) {
 	if len(*h) == 0 {
 		return nil, false
@@ -34,8 +45,9 @@ func (h *Heap) Peek() (Sortable, bool) {
 	return (*h)[0], true
 }
 
-// Remove removes the first element in the heap, re-heapifies the heap,
-// and returns the removed element.
+// Remove removes the first element in the Heap, re-heapifies the Heap,
+// and returns the removed element. The bool indicates if the returned
+// value is valid, similarly to Peek().
 func (h *Heap) Remove() (Sortable, bool) {
 	// Quick sanity check.
 	if len(*h) == 0 {
@@ -49,8 +61,8 @@ func (h *Heap) Remove() (Sortable, bool) {
 	return toReturn, true
 }
 
-// Union takes two heaps and returns a new Heap with the elements of
-// heaps. The original Heaps are preserved.
+// Union takes two Heaps and returns a new Heap with all the elements of
+// both Heaps. The original Heaps are preserved.
 func Union(g, h Heap) Heap {
 	var newHeap Heap
 	for i := 0; i < len(h); i++ {
@@ -62,7 +74,7 @@ func Union(g, h Heap) Heap {
 	return newHeap
 }
 
-// Heapify makes a heap using the passed slice. The passed slice is
+// Heapify makes a Heap using the passed slice. The passed slice is
 // preserved.
 func Heapify(arr []Sortable) Heap {
 	var h Heap
@@ -73,7 +85,7 @@ func Heapify(arr []Sortable) Heap {
 }
 
 // bubbleUp shifts the element at the end of the backing array
-// up the heap until the heap property is restored.
+// up the Heap until the heap property is restored.
 func (h *Heap) bubbleUp() {
 	i := len(*h) - 1
 	// Quick sanity check.
@@ -92,7 +104,7 @@ func (h *Heap) bubbleUp() {
 }
 
 // bubbleDown shifts the 0th element of the backing array
-// down the heap until the heap property is restored.
+// down the Heap until the heap property is restored.
 func (h *Heap) bubbleDown() {
 	i := 0
 	// Quick sanity check.

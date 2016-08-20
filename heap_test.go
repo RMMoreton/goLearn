@@ -40,6 +40,23 @@ func TestEmptyHeapLength(t *testing.T) {
 	}
 }
 
+// Test that Empty() returns true on an empty Heap.
+func TestEmptyOnEmptyHeap(t *testing.T) {
+	var h Heap
+	if !h.Empty() {
+		t.Error("h should be empty")
+	}
+}
+
+// Test that Empty() returns false on a non-empty Heap.
+func TestEmptyOnNonEmptyHeap(t *testing.T) {
+	var h Heap
+	h.Add(Sint(5))
+	if h.Empty() {
+		t.Error("h should not be empty")
+	}
+}
+
 // Test creation of a Heap, and adding one item.
 func TestAddOne(t *testing.T) {
 	var h Heap

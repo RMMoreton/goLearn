@@ -3,7 +3,7 @@
 Goheap provides a Golang implementation of a heap using
 slices as the backing data structure.
 
-[Documentation](http://godoc.org/github.com/RMMoreton/golang-heap)
+[Documentation](http://godoc.org/github.com/RMMoreton/goheap)
 
 ## Examples
 
@@ -15,7 +15,8 @@ slices as the backing data structure.
 		// Type assert b back to an Sint.
 		bb, ok := b.(Sint)
 		if !ok {
-			// Do something to save yourself
+			// Do something to save yourself, or just
+			panic("AHHHH!!!!")
 		}
 		// In this example, higher value means higher priority.
 		if int(a) > int(bb) {
@@ -24,11 +25,8 @@ slices as the backing data structure.
 		return false
 	}
 
-Obviously you can get yourself in to trouble with the type assert; be
-careful about what you put into the Heap and you'll be okay.
-
 ### Creating a Heap
 
 	var h goheap.Heap
 
-The zero-value of a Heap is useable without any extra initialization.
+The zero-value of a Heap is (happily) useable without any extra initialization.
