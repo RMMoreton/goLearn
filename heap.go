@@ -1,8 +1,7 @@
 //Package goheap implements a heap.
 package goheap
 
-// A type which implements Sortable may be ordered. Maybe I should have
-// called this one Orderable. Oh well.
+// A Sortable type may be ordered.
 type Sortable interface {
 	// ComesBefore reports whether the Sortable value which it was called on
 	// should come before b.
