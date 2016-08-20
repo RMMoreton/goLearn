@@ -1,17 +1,17 @@
-// Package gopriq implements a priority queue in Go.
-package gopriq
+// Package priq implements a priority queue in Go.
+package priq
 
 // I'm using my own implementation of a heap.
 import (
-	"github.com/RMMoreton/goheap"
+	"github.com/RMMoreton/goLearn/heap"
 )
 
 // A Sortable type can be ordered.
-type Sortable goheap.Sortable
+type Sortable heap.Sortable
 
 // A PriQ is just a Heap.
 type PriQ struct {
-	h goheap.Heap
+	h heap.Heap
 }
 
 // Add adds a value to the Priority queue.

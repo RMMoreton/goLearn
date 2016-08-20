@@ -1,9 +1,9 @@
-# goheap
+# learn/heap
 
-goheap provides a Golang implementation of a heap using
+heap provides a Golang implementation of a heap using
 slices as the backing data structure.
 
-[Documentation](http://godoc.org/github.com/RMMoreton/goheap)
+[Documentation](http://godoc.org/github.com/RMMoreton/goLearn/heap)
 
 ## Examples
 
@@ -27,6 +27,6 @@ slices as the backing data structure.
 
 ### Creating a Heap
 
-	var h goheap.Heap
+	var h heap.Heap
 
 The zero-value of a Heap is (happily) useable without any extra initialization.

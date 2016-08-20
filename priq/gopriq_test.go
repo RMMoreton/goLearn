@@ -1,4 +1,4 @@
-package gopriq
+package priq
 
 import (
 	"testing"

@@ -1,4 +1,4 @@
-package goheap
+package heap
 
 import (
 	"fmt"

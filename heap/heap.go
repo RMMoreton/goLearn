@@ -1,5 +1,5 @@
-//Package goheap implements a heap.
-package goheap
+//Package heap implements a heap.
+package heap
 
 // A Sortable type may be ordered.
 type Sortable interface {
