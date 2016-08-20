@@ -1,4 +1,4 @@
-# learn/heap
+# goLearn/heap
 
 heap provides a Golang implementation of a heap using
 slices as the backing data structure.
