@@ -1,6 +1,6 @@
 # goheap
 
-Goheap provides a Golang implementation of a heap using
+goheap provides a Golang implementation of a heap using
 slices as the backing data structure.
 
 [Documentation](http://godoc.org/github.com/RMMoreton/goheap)
