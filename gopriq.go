@@ -1,4 +1,4 @@
-// Package gopryq implements a priority queue in Go.
+// Package gopriq implements a priority queue in Go.
 package gopriq
 
 // I'm using my own implementation of a heap.
@@ -6,13 +6,10 @@ import (
 	"github.com/RMMoreton/goheap"
 )
 
-// This *might* cause some problems down the road, with some functions expecting
-// a goheap.Sortable and getting a gopriq.Sortable. Hopefully not!
+// A Sortable type can be ordered.
 type Sortable goheap.Sortable
 
-// A priority queue is just a structure holding a Heap. I tried to write
-// `type PriQ goheap.Heap` but I couldn't get the type converting right in
-// the functions.
+// A PriQ is just a Heap.
 type PriQ struct {
 	h goheap.Heap
 }
