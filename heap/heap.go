@@ -88,7 +88,7 @@ func (h *Heap) bubbleUp() {
 		return
 	}
 	heap := *h
-	for {
+	for i > 0 {
 		parentI := (i - 1) / 2
 		if !heap[i].ComesBefore(heap[parentI]) {
 			return
