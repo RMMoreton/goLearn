@@ -1,7 +1,7 @@
 # goLearn/huffman
 
-Package huffman implements Huffman-coding.
+Package huffman implements Huffman-coding of arbitrary files.
 
 ## Documentation
 
-Forthcoming.
+[![GoDoc](https://godoc.org/github.com/RMMoreton/goLearn/huffman?status.svg)](https://godoc.org/github.com/RMMoreton/goLearn/huffman)

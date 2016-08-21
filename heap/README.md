@@ -3,6 +3,8 @@
 heap provides a Golang implementation of a heap using
 slices as the backing data structure.
 
+## Documentation
+
 [![GoDoc](https://godoc.org/github.com/RMMoreton/goLearn/heap?status.svg)](https://godoc.org/github.com/RMMoreton/goLearn/heap)
 
 ## Examples

@@ -2,9 +2,23 @@ package huffman
 
 import (
 	"github.com/RMMoreton/goLearn/priq"
+	"os"
+	"testing"
 )
 
-// Foolish is a function which will soon be gotten rid of.
-func Foolish(x int) int {
-	return x
+var _ priq.PriQ
+
+// TestEncode tests the Encode function.
+func TestEncode(t *testing.T) {
+	in, err := os.Open("test_in.txt")
+	if err != nil {
+		t.Errorf("could not open input file")
+	}
+	defer func() {in.Close()}()
+	out, err := os.Create("test_out.txt")
+	if err != nil {
+		t.Errorf("could not open output file")
+	}
+	defer func() {out.Close()}()
+	Encode(in, out)
 }
