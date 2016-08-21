@@ -47,18 +47,6 @@ func Encode(in, out *os.File) {
 	}
 }
 
-// printHuffman prints a Huffman tree (not very well, though).
-func printHuffman(h *node, i int) {
-	for j := 0; j < i; j++ {
-		fmt.Printf(" ")
-	}
-	fmt.Printf("c: %c, p: %d\n", h.data, h.count)
-	if h.left != nil {
-		printHuffman(h.left, i+1)
-		printHuffman(h.right, i+1)
-	}
-}
-
 // count takes an input file and counts the number of occurrences of each byte.
 // Any reads performed after count returns will read from the beginning of
 // the file.
