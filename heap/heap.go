@@ -18,10 +18,7 @@ func (h *Heap) Len() int {
 
 // Empty reports whether the Heap is empty.
 func (h *Heap) Empty() bool {
-	if len(*h) == 0 {
-		return true
-	}
-	return false
+	return len(*h) == 0
 }
 
 // Add adds a value to the Heap.
